@@ -84,6 +84,7 @@
                     Laravel
                 </div>
 
+                <button onclick="send();">Send</button>
                 <div class="links">
                     <a href="https://laravel.com/docs">Documentation</a>
                     <a href="https://laracasts.com">Laracasts</a>
@@ -94,5 +95,23 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            var conn = new WebSocket('ws://localhost:8080');
+            conn.onopen = function (e) {
+                console.log("Connection established!");
+            };
+
+            conn.onmessage = function (e) {
+                console.log('Получены данные: ' + e.data);
+            };
+
+            function send() {
+                var data = 'Данные для отправки: ' + Math.random();
+                conn.send(data);
+                console.log('оптравлено: ' + data);
+            }
+
+        </script>
     </body>
 </html>

@@ -6,7 +6,7 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-
+ini_set('opcache.enable', 0);
 define('LARAVEL_START', microtime(true));
 
 /*
