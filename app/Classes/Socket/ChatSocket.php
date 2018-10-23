@@ -3,6 +3,7 @@
 namespace App\Classes\Socket;
 
 use App\Classes\Socket\Base\BaseSocket;
+use App\Message;
 use Ratchet\ConnectionInterface;
 
 class ChatSocket extends BaseSocket
@@ -23,6 +24,7 @@ class ChatSocket extends BaseSocket
 
     function onMessage(ConnectionInterface $from, $msg)
     {
+        $data = json_decode($msg);
         $numRecv = count($this->clients) - 1;
 
         echo sprintf(
@@ -30,10 +32,15 @@ class ChatSocket extends BaseSocket
             $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's'
             );
 
+        $message = new Message();
+        $message->user_id = $data->authId;
+        $message->message = $data->message;
+        $message->save();
+
         foreach ($this->clients as $client)
         {
             if ($from !== $client) {
-                $client->send($msg);
+                $client->send($data->message);
             }
         }
     }

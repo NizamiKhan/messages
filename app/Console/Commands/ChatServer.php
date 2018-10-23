@@ -49,7 +49,8 @@ class ChatServer extends Command
                     new ChatSocket()
                 )
             ),
-            8080
+            8080,
+            '192.168.0.105'
         );
 
         $server->run();
