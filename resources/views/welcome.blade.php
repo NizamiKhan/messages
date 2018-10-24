@@ -88,11 +88,6 @@
                 </div>
             @endif
                 <div class="container">
-                    <h1 class="jumbotron-heading align-content-center">Чатик</h1>
-                    <div class="form-group">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                    </div>
-                    <button class="btn btn-info" onclick="send()">отправить</button>
                     <br><br>
                     <div class="row">
                         @foreach($messages as $message)
@@ -105,18 +100,23 @@
                             </div>
                         @endforeach
                     </div>
+                    <h1 class="jumbotron-heading align-content-center">Чатик</h1>
+                    <div class="form-group">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <button class="btn btn-info" onclick="send()">отправить</button>
+                    <br><br>
                 </div>
-
                 <script>
                     var conn = new WebSocket('ws://192.168.0.105:8080');
                     conn.onopen = function (e) {
                         console.log("Connection established!");
-
                     };
 
                     conn.onmessage = function (e) {
                         console.log('Получены данные: ' + e.data);
                         appendMessage(e.data);
+                        scrollToBtn();
                     };
 
                     function send() {
@@ -128,6 +128,7 @@
 
                         appendMessage(text);
                         clearTextArea();
+                        scrollToBtn();
                     }
 
                     function appendMessage(text) {
@@ -146,6 +147,9 @@
                         $('.form-control').val('');
                     }
 
+                    function scrollToBtn() {
+                        $(document).scrollTop($(".btn").offset().top);
+                    }
                 </script>
         </div>
     </body>
